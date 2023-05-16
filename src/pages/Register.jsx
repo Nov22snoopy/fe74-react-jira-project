@@ -1,7 +1,16 @@
 import React from "react";
 import "../assests/style/register.css";
 import { NavLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { UserService } from "../service/User.service";
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: onchange,
+  });
   return (
     <div className="container h-screen bg-[#f7f7f7]">
       <div className="row h-full">
@@ -13,7 +22,16 @@ const Register = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create an account
                 </h1>
-                <form className="space-y-4 md:space-y-6" action="#">
+                <form
+                  className="space-y-4 md:space-y-6"
+                  onSubmit={handleSubmit(async (value) => {
+                    try {
+                      const res = await UserService.register(value);
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  })}
+                >
                   <div>
                     <label
                       htmlFor="email"
@@ -26,7 +44,18 @@ const Register = () => {
                       name="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
+                      {...register("email", {
+                        required: "Vui long nhap email",
+                        pattern: {
+                          value:
+                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                          message: "email khong kha dung",
+                        },
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.email?.message}
+                    </p>
                   </div>
                   <div>
                     <label
@@ -40,7 +69,17 @@ const Register = () => {
                       name="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register("passWord", {
+                        pattern: {
+                          value:
+                            /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{0,}$/,
+                          message: "It nhat 1 chu cai in hoa, 1 ky tu dac biet",
+                        },
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.passWord?.message}
+                    </p>
                   </div>
                   <div>
                     <label
@@ -54,7 +93,13 @@ const Register = () => {
                       name="fullname"
                       placeholder="Nguyễn Văn A"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register("name", {
+                        required: "Vui long nhap ho ten",
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.name?.message}
+                    </p>
                   </div>
                   <div>
                     <label
@@ -65,10 +110,16 @@ const Register = () => {
                     </label>
                     <input
                       type="text"
-                      name="fullname"
+                      name="phoneNumber"
                       placeholder="+8409023356"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register("phoneNumber", {
+                        required: "Vui long nhap so dien thoai",
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.phoneNumber?.message}
+                    </p>
                   </div>
                   <button
                     type="submit"
@@ -79,7 +130,7 @@ const Register = () => {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Already have an account?{" "}
                     <NavLink
-                      to={'/login'}
+                      to={"/"}
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                     >
                       Login here

@@ -1,8 +1,28 @@
 import React from "react";
 import "../assests/style/login.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/user/thunkAction";
 
 const LogIn = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: onchange,
+  });
+  const dispatch = useDispatch();
+  const {user} = useSelector((state)=>state.UserService);
+  const userStatuse = localStorage.getItem('user')
+  if(user) {
+    return <Navigate to={'/home'}/>
+  }
+  if(userStatuse) {
+    return <Navigate to={'/home'}/>
+  }
+
   return (
     <div className="container h-screen bg-[#f7f7f7]">
       <div className="row h-full">
@@ -14,7 +34,12 @@ const LogIn = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign in to your account
                 </h1>
-                <form className="space-y-4 md:space-y-6" action="#">
+                <form
+                  className="space-y-4 md:space-y-6"
+                  onSubmit={handleSubmit((value) => {
+                    dispatch(login(value));
+                  })}
+                >
                   <div>
                     <label
                       htmlFor="email"
@@ -28,8 +53,13 @@ const LogIn = () => {
                       id="email"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
-                      required
+                      {...register("email", {
+                        required: "Vui long nhap email",
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.email?.message}
+                    </p>
                   </div>
                   <div>
                     <label
@@ -44,8 +74,13 @@ const LogIn = () => {
                       id="password"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required
+                      {...register("passWord", {
+                        required: "vui long nhap mat khau",
+                      })}
                     />
+                    <p className="text-[13px] text-red-500">
+                      {errors?.passWord?.message}
+                    </p>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-start">
@@ -55,7 +90,6 @@ const LogIn = () => {
                           aria-describedby="remember"
                           type="checkbox"
                           className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                          required
                         />
                       </div>
                       <div className="ml-3 text-sm">
@@ -77,7 +111,7 @@ const LogIn = () => {
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don’t have an account yet?{" "}
                     <NavLink
-                      to={'/register'}
+                      to={"/register"}
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                     >
                       Sign up

@@ -1,34 +1,37 @@
-import React from 'react'
-import { useRoutes } from 'react-router-dom'
-import MainLayout from '../layout/MainLayout'
-import Register from '../pages/Register'
-import LogIn from '../pages/LogIn'
-import HomeProject from '../pages/HomeProject'
+import React from "react";
+import { useRoutes } from "react-router-dom";
+import LoginLayout from "../layout/LoginLayout";
+import Register from "../pages/Register";
+import LogIn from "../pages/LogIn";
+import ProjectLayout from "../layout/ProjectLayout";
 
 const Router = () => {
   const element = useRoutes([
     {
-      path: "/",
-      element: <MainLayout/>,
-      children:[
+      children: [
         {
-          path: "/home",
-          element: <HomeProject/>
+          path: "/",
+          element: <LoginLayout />,
+          children: [
+            {
+              path: "/",
+              element: <LogIn />,
+            },
+            {
+              path: "/register",
+              element: <Register />,
+            },
+            {
+              path: "/home",
+              element: <ProjectLayout/>,
+            },
+          ],
         },
-        {
-          path: "/register",
-          element: <Register/>
-        },
-        {
-          path: "/login",
-          element: <LogIn/>
-        }
-      ]
-    }
-  ])
-  return (
-    element
-  )
-}
+       
+      ],
+    },
+  ]);
+  return element;
+};
 
-export default Router
+export default Router;
