@@ -13,11 +13,13 @@ export const checkToken = () => {
    }
    return token
 }
+
 http.interceptors.request.use((config)=>{
   return {
     ...config,
     headers:{
-
+      TokenCyberSoft,
+      Authorization: checkToken(),
     },
     baseURL,
   }

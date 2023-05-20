@@ -1,34 +1,34 @@
 import React from "react";
 import { useRoutes } from "react-router-dom";
-import LoginLayout from "../layout/LoginLayout";
 import Register from "../pages/Register";
 import LogIn from "../pages/LogIn";
 import ProjectLayout from "../layout/ProjectLayout";
+import ProjectManage from "../pages/ProjectManage";
+import CreateProject from "../modules/CreateProject";
 
 const Router = () => {
   const element = useRoutes([
     {
+      path: "/login",
+      element: <LogIn />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/",
+      element: <ProjectLayout />,
       children: [
         {
-          path: "/",
-          element: <LoginLayout />,
-          children: [
-            {
-              path: "/",
-              element: <LogIn />,
-            },
-            {
-              path: "/register",
-              element: <Register />,
-            },
-            {
-              path: "/home",
-              element: <ProjectLayout/>,
-            },
-          ],
+          path: '/projectList',
+          element: <ProjectManage/>
         },
-       
-      ],
+        {
+          path: '/createProject',
+          element: <CreateProject/>
+        }
+      ]
     },
   ]);
   return element;

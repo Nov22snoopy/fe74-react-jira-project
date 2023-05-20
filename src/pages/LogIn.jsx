@@ -15,13 +15,10 @@ const LogIn = () => {
   });
   const dispatch = useDispatch();
   const {user} = useSelector((state)=>state.UserService);
-  const userStatuse = localStorage.getItem('user')
   if(user) {
-    return <Navigate to={'/home'}/>
+    return <Navigate to={'/'}/>
   }
-  if(userStatuse) {
-    return <Navigate to={'/home'}/>
-  }
+
 
   return (
     <div className="container h-screen bg-[#f7f7f7]">
