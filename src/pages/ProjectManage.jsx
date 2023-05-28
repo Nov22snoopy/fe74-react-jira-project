@@ -1,6 +1,6 @@
 import React from "react";
-import ProjectList from "../modules/ProjectList";
-import IsLoading from "../modules/IsLoading";
+import ProjectList from "../modules/projectManagement/ProjectList";
+import IsLoading from "../modules/projectManagement/IsLoading";
 import { useSelector } from "react-redux";
 
 const ProjectManage = () => {

@@ -1,5 +1,5 @@
 import { Drawer, Space } from "antd";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,65 +7,54 @@ import {
   getProjectCategory,
   getProjectDetail,
   updateProject,
-} from "../store/project/thunkAction";
-const UpdateProject = (props) => {
-  const [open, setOpen] = useState(false);
-  const [size, setSize] = useState();
+} from "../../store/project/thunkAction";
+import { openDrawerAction } from "../../store/drawer/slice";
+const UpdateProject = () => {
+  const [categoryId, setCategoryId] = useState(null) 
   const editorRef = useRef(null);
-  const { projectCategories, projectDetail } = useSelector(
+  const { projectCategories, projectId, projectDetail, projectCategoryId } = useSelector(
     (state) => state.ProjectService
   );
+  const {onOpen} =useSelector((state)=>state.OpenDrawer)
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProjectCategory());
   }, [dispatch]);
-
+  useEffect(()=>{
+    dispatch(getProjectDetail(projectId))
+  },[dispatch,projectId])
   const { register, handleSubmit, reset } = useForm({
-    projectDetail,
-    defaultValues: useMemo(() => {
-      return projectDetail;
-    }, [projectDetail]),
+  
   });
-  useEffect(() => {
-    reset(projectDetail);
-  }, [projectDetail]);
-  const showLargeDrawer = () => {
-    setSize("large");
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
+  useEffect(()=>{
+    reset(projectDetail)
+  },[reset,projectDetail])
+  const Onclose = () =>{
+    dispatch(openDrawerAction.closeDrawer())
+  }
+
   return (
     <>
       <Space>
-        <button
-          className="btn btn-info"
-          onClick={() => {
-            showLargeDrawer();
-            dispatch(getProjectDetail(props.id));
-          }}
-        >
-          Edit
-        </button>
+
       </Space>
       <Drawer
         title={<h1 className="text-2xl mt-3 font-bold">Update Project</h1>}
         placement="right"
-        size={size}
-        onClose={onClose}
-        open={open}
+        size='large'
+        onClose={Onclose}
+        open={onOpen}
       >
         <form
           onSubmit={handleSubmit((value) => {
             const project = {
-              id:Number(projectDetail?.id),
+              id: Number(projectDetail?.id),
               projectName: value.projectName,
-              creator: Number(projectDetail?.creator.id),
               description: editorRef?.current.getContent(),
-              categoryId: value.categoryId,
+              categoryId: value.categoryId
             }
-            dispatch(updateProject(project.id,project))
+            dispatch(updateProject(project))
+            Onclose()
           })}
         >
           <div className="mb-6">
@@ -121,8 +110,8 @@ const UpdateProject = (props) => {
             </label>
             <select
               name="categoryId"
+              defaultValue={projectCategoryId}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              defaultValue={props.category}
               {...register("categoryId")}
             >
               {projectCategories.map((item) => {
@@ -145,4 +134,4 @@ const UpdateProject = (props) => {
     </>
   );
 };
-export default UpdateProject;
+export default memo(UpdateProject);

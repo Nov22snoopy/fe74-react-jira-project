@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { createProjectAuthorize, getProjectCategory } from "../store/project/thunkAction";
+import { createProjectAuthorize, getProjectCategory } from "../../store/project/thunkAction";
 import { Navigate } from "react-router-dom";
 const CreateProject = () => {
   const editorRef = useRef(null);

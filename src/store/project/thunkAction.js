@@ -29,6 +29,7 @@ export const createProjectAuthorize = createAsyncThunk (
   "ProjectService/createProjectAuthorize",
   async(payload, {rejectWithValue})=>{
     try {
+      console.log(payload);
       const res = await ProjectService.creatProjectAuthorize(payload)
       return res.data.content
     } catch (error) {
@@ -65,13 +66,40 @@ export const getProjectDetail = createAsyncThunk (
 //Update Project
 export const updateProject = createAsyncThunk(
   "ProjectService/updateProject",
-  async(query,payload)=>{
+  async(payload)=>{
     try {
-      const res = await ProjectService.updateProject(query,payload)
+      console.log(payload);
+      const res = await ProjectService.updateProject(payload.id, payload)
       console.log(res.data.content);
       return res.data.content
     } catch (error) {
       console.log(error);
+    }
+  }
+);
+
+// AsignUserProject
+export const asignUserProject = createAsyncThunk(
+  'ProjectService/asignUserProject',
+  async(payload, {rejectWithValue})=>{
+    try {
+      const res = await ProjectService.asignUserProject(payload);
+      return res.data.content
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
+);
+
+// Remove user from project
+export const removeUserFromProject = createAsyncThunk(
+  'ProjectService/removeUserFromProject',
+  async(payload, {rejectWithValue})=>{
+    try {
+      const res = ProjectService.removeUserFromProject(payload)
+      
+    } catch (error) {
+      return rejectWithValue(error)
     }
   }
 )

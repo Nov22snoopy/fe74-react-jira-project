@@ -6,5 +6,7 @@ export const ProjectService = {
   creatProjectAuthorize: ( payload) => http.post(`Project/createProjectAuthorize`, payload),
   deleteProject:(query)=> http.delete(`Project/deleteProject?projectId=${query}`),
   getProjectDetail: (query)=> http.get (`Project/getProjectDetail?id=${query}`),
-  updateProject: (query, payload)=> http.put(`Project/updateProject?projectId=${query}`,payload)
+  updateProject: (query, payload)=> http.put(`Project/updateProject?projectId=${query}`,payload),
+  asignUserProject: (payload)=>http.post(`Project/assignUserProject`,payload),
+  removeUserFromProject:(payload)=>http.post(`Project/removeUserFromProject`,payload),
 }

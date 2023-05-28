@@ -4,7 +4,8 @@ import Register from "../pages/Register";
 import LogIn from "../pages/LogIn";
 import ProjectLayout from "../layout/ProjectLayout";
 import ProjectManage from "../pages/ProjectManage";
-import CreateProject from "../modules/CreateProject";
+import CreateProject from "../modules/projectManagement/CreateProject";
+import ProjectDetail from "../pages/ProjectDetail";
 
 const Router = () => {
   const element = useRoutes([
@@ -27,7 +28,11 @@ const Router = () => {
         {
           path: '/createProject',
           element: <CreateProject/>
-        }
+        },
+        {
+          path: '/projectDetail/:id',
+          element: <ProjectDetail/>
+        },
       ]
     },
   ]);

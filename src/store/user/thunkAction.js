@@ -14,3 +14,25 @@ export const login = createAsyncThunk(
     }
   }
 )
+export const getUser = createAsyncThunk(
+  "UserService/getUser",
+  async(query,{rejectWithValue})=>{
+    try {
+      const res = await UserService.getUser(query);
+      return res.data.content
+    } catch (error) {
+      return rejectWithValue(error) 
+    }
+  }
+)
+export const getALLUser = createAsyncThunk(
+  "UserService/getAllUser",
+  async(_,{rejectWithValue})=>{
+    try {
+      const res = await UserService.getAllUser();
+      return res.data.content
+    } catch (error) {
+      return rejectWithValue(error) 
+    }
+  }
+)
