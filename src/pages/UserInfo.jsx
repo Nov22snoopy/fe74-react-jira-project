@@ -25,7 +25,7 @@ const UserInfo = () => {
     <div className="p-4 sm:ml-64">
       <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ml-auto mr-auto w-2/3 shadow-lg md:mt-10">
         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-          Create an account
+          Updatate your account
         </h1>
         <form
           className="space-y-4 md:space-y-6"
