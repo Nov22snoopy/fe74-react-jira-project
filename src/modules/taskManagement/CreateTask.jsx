@@ -12,9 +12,9 @@ const CreateTask = (props) => {
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
   });
+  const[reRender,setRerender] = useState(1)
   const { onOpen } = useSelector((state) => state.OpenModal);
-  const { taskType, piority } = useSelector((state) => state.TaskService);
-  const { allUser } = useSelector((state) => state.UserService);
+  const { taskType, priority, isLoading, newTask } = useSelector((state) => state.TaskService);
   const dispatch = useDispatch();
   const editorRef = useRef(null);
   const onClose = () => {
@@ -23,10 +23,9 @@ const CreateTask = (props) => {
   useEffect(() => {
     dispatch(getTaskType());
     dispatch(getALLUser());
-  }, [dispatch]);
-  useEffect(() => {
     dispatch(getPiority());
-  }, [dispatch]);
+    setRerender(Math.floor(Math.random() * 10))
+  }, [dispatch,isLoading,newTask]);
   const { register, handleSubmit, setValue } = useForm({
   
   });
@@ -115,7 +114,7 @@ const CreateTask = (props) => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   {...register('priorityId')}
                 >
-                  {piority?.map((item) => {
+                  {priority?.map((item) => {
                     return (
                       <option key={item.priorityId} value={item.priorityId}>
                         {item.description}

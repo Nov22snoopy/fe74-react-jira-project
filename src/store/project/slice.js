@@ -36,13 +36,16 @@ export const {
   extraReducers: (buidler) => {
     buidler
       .addCase(getProjectList.fulfilled, (state, actions) => {
-        state.projectList = actions.payload.slice(50);
+        state.projectList = actions.payload;
       })
       .addCase(getProjectCategory.fulfilled, (state, actions) => {
         state.projectCategories = actions.payload;
       })
+      .addCase(createProjectAuthorize.pending,(state, actions)=>{
+        state.isDeleting = false
+      })
       .addCase(createProjectAuthorize.fulfilled, (state, actions) => {
-        state.newProject = actions.payload;
+        state.isDeleting = true;
       })
       .addCase(getProjectDetail.fulfilled, (state, actions) => {
         state.projectDetail = actions.payload;

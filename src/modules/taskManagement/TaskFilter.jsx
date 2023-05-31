@@ -12,6 +12,7 @@ const TaskFilter = (props) => {
         onSearch={onSearch}
         style={{
           width: 200,
+          padding: 0
         }}
       />{" "}
       <div className="task-member ml-3 ">

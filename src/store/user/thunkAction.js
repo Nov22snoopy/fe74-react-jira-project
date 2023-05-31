@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { UserService } from "../../service/User.service";
+import { message } from "antd";
 
 export const login = createAsyncThunk(
   "UserService/login",
@@ -7,6 +8,7 @@ export const login = createAsyncThunk(
     try {
       const res = await UserService.login(payload)
       if (res.data.statusCode === 200){
+        message.success("Login successfully")
         return res.data.content
       }
     } catch (error) {
@@ -33,6 +35,22 @@ export const getALLUser = createAsyncThunk(
       return res.data.content
     } catch (error) {
       return rejectWithValue(error) 
+    }
+  }
+)
+
+//edit user account
+export const editUser = createAsyncThunk(
+  'UserService/editUser',
+  async(payload, {rejectWithValue})=>{
+    try {
+      const res = await UserService.editUser(payload)
+      if(res.data.statusCode === 200) {
+        message.success('Update account successfully')
+      }
+      return res.data.content
+    } catch (error) {
+      return rejectWithValue(error)
     }
   }
 )

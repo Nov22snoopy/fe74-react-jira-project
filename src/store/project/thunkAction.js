@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ProjectService } from "../../service/Project.Service";
-
+import { message } from "antd";
+//get all project
 export const getProjectList = createAsyncThunk(
   "ProjectService/getProjectList",
   async (_, { rejectWithValue }) => {
@@ -31,6 +32,9 @@ export const createProjectAuthorize = createAsyncThunk (
     try {
       console.log(payload);
       const res = await ProjectService.creatProjectAuthorize(payload)
+      if(res.data.statusCode === 200) {
+        message.success('Create project successfully')
+      }
       return res.data.content
     } catch (error) {
       return rejectWithValue(error)      
@@ -44,7 +48,7 @@ export const deleteProject = createAsyncThunk(
     try {
       const res = await ProjectService.deleteProject(payload);
       if(res.data.statusCode === 200) {
-        console.log(res.data.statusCode);
+        message.success('Delete project successfully')
       }
     } catch (error) {
       return rejectWithValue(error)
@@ -70,7 +74,9 @@ export const updateProject = createAsyncThunk(
     try {
       console.log(payload);
       const res = await ProjectService.updateProject(payload.id, payload)
-      console.log(res.data.content);
+      if(res.data.statusCode === 200) {
+        message.success('Update project successfully')
+      }
       return res.data.content
     } catch (error) {
       console.log(error);
@@ -84,6 +90,9 @@ export const asignUserProject = createAsyncThunk(
   async(payload, {rejectWithValue})=>{
     try {
       const res = await ProjectService.asignUserProject(payload);
+      if(res.data.statusCode === 200) {
+        message.success(res.data.content)
+      }
       return res.data.content
     } catch (error) {
       return rejectWithValue(error)
@@ -96,8 +105,10 @@ export const removeUserFromProject = createAsyncThunk(
   'ProjectService/removeUserFromProject',
   async(payload, {rejectWithValue})=>{
     try {
-      const res = ProjectService.removeUserFromProject(payload)
-      
+      const res = await ProjectService.removeUserFromProject(payload)
+      if(res.data.statusCode === 200) {
+        message.success(res.data.content)
+      }
     } catch (error) {
       return rejectWithValue(error)
     }

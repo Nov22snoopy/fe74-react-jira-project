@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Navigate } from "react-router-dom";
 import { UserServiceActions } from "../store/user/slice";
+
 const SideBar = () => {
   const { user } = useSelector((state) => state.UserService);
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const SideBar = () => {
   if (!user) {
     return <Navigate to={"/login"} />;
   }
+
   return (
     <div>
       <button
@@ -39,9 +41,38 @@ const SideBar = () => {
         aria-label="Sidebar"
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+          <NavLink to={'/'} className="flex items-center py-3">
+            <img
+              className="mr-2"
+              src="https://i.imgur.com/lC22izJ.png"
+              width={40}
+              height={40}
+              alt="logo.jpg"
+            />
+            <div>
+              <p
+                className="text-base m-0"
+                style={{
+                  color: "rgb(66, 82, 110)",
+                  fontWeight: "700",
+                }}
+              >
+                Cyber Jira Clone
+              </p>
+              <p
+                className=" text-sm"
+                style={{
+                  color: "rgb(94, 108, 132)",
+                }}
+              >
+                Software project
+              </p>
+            </div>
+          </NavLink>
+          <hr></hr>
           <ul className="space-y-2 font-medium">
             <li>
-              <NavLink className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <NavLink to={'/userInfo'} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                 <svg
                   aria-hidden="true"
                   className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -59,7 +90,10 @@ const SideBar = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={`/projectDetail/id`} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+              <NavLink
+                to={`/projectDetail/id`}
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
                 <svg
                   aria-hidden="true"
                   className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -75,7 +109,7 @@ const SideBar = () => {
             </li>
             <li>
               <NavLink
-                to={"/projectList"}
+                to={"/"}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg

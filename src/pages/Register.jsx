@@ -1,8 +1,9 @@
 import React from "react";
 import "../assests/style/register.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { UserService } from "../service/User.service";
+import { message } from "antd";
 const Register = () => {
   const {
     register,
@@ -11,6 +12,7 @@ const Register = () => {
   } = useForm({
     mode: onchange,
   });
+  const navigate= useNavigate()
   return (
     <div className="container h-screen bg-[#f7f7f7]">
       <div className="row h-full">
@@ -20,13 +22,17 @@ const Register = () => {
             <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                  Create an account
+                  Update your account
                 </h1>
                 <form
                   className="space-y-4 md:space-y-6"
                   onSubmit={handleSubmit(async (value) => {
                     try {
                       const res = await UserService.register(value);
+                      if(res.data.statusCode === 200) {
+                        message.success(res.data.message)
+                        navigate('/login')
+                      }
                     } catch (error) {
                       console.log(error);
                     }
@@ -45,11 +51,11 @@ const Register = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="name@company.com"
                       {...register("email", {
-                        required: "Vui long nhap email",
+                        required: "Please enter your email",
                         pattern: {
                           value:
                             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                          message: "email khong kha dung",
+                          message: "Email is not valid",
                         },
                       })}
                     />
@@ -70,10 +76,11 @@ const Register = () => {
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       {...register("passWord", {
+                        required: 'Please enter your password',
                         pattern: {
                           value:
                             /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{0,}$/,
-                          message: "It nhat 1 chu cai in hoa, 1 ky tu dac biet",
+                          message: "At least 1 special character, 1 number , 1 upper case word",
                         },
                       })}
                     />
@@ -94,7 +101,7 @@ const Register = () => {
                       placeholder="Nguyễn Văn A"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       {...register("name", {
-                        required: "Vui long nhap ho ten",
+                        required: "Please enter your name",
                       })}
                     />
                     <p className="text-[13px] text-red-500">
@@ -114,7 +121,7 @@ const Register = () => {
                       placeholder="+8409023356"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       {...register("phoneNumber", {
-                        required: "Vui long nhap so dien thoai",
+                        required: "Please enter your phone number",
                       })}
                     />
                     <p className="text-[13px] text-red-500">

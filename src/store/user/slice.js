@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getALLUser, getUser, login } from "./thunkAction";
+import { editUser, getALLUser, getUser, login } from "./thunkAction";
 const initialState = {
   user: undefined,
   allUser: null,
@@ -24,15 +24,19 @@ export const { reducer: UserServiceReducer, actions: UserServiceActions } =
 
     extraReducers: (builder) => {
       builder
-        .addCase(login.fulfilled, (state, action) => {
-          state.user = action.payload;
-          localStorage.setItem("user", JSON.stringify(action.payload));
+        .addCase(login.fulfilled, (state, actions) => {
+          state.user = actions.payload;
+          localStorage.setItem("user", JSON.stringify(actions.payload));
         })
-        .addCase(getUser.fulfilled,(state,action)=>{
-          state.searchUser = action.payload
+        .addCase(getUser.fulfilled,(state,actions)=>{
+          state.searchUser = actions.payload
         })
-        .addCase(getALLUser.fulfilled,(state, action)=>{
-          state.allUser =action.payload.slice(500)
+        .addCase(getALLUser.fulfilled,(state, actions)=>{
+          state.allUser =actions.payload.slice(500)
+        })
+        .addCase(editUser.fulfilled,(state,actions)=>{
+          state.user = actions.payload
+          localStorage.setItem("user", JSON.stringify(actions.payload));
         })
     },
   });

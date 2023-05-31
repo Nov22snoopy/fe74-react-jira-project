@@ -6,6 +6,7 @@ import ProjectLayout from "../layout/ProjectLayout";
 import ProjectManage from "../pages/ProjectManage";
 import CreateProject from "../modules/projectManagement/CreateProject";
 import ProjectDetail from "../pages/ProjectDetail";
+import UserInfo from "../pages/UserInfo";
 
 const Router = () => {
   const element = useRoutes([
@@ -22,7 +23,7 @@ const Router = () => {
       element: <ProjectLayout />,
       children: [
         {
-          path: '/projectList',
+          path: '/',
           element: <ProjectManage/>
         },
         {
@@ -33,6 +34,10 @@ const Router = () => {
           path: '/projectDetail/:id',
           element: <ProjectDetail/>
         },
+        {
+          path: '/userInfo',
+          element: <UserInfo/>
+        }
       ]
     },
   ]);

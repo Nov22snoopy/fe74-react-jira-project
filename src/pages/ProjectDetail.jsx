@@ -9,17 +9,15 @@ import TaskList from "../modules/taskManagement/TaskList";
 import { openModalAction } from "../store/taskModal/slice";
 import CreateTask from "../modules/taskManagement/CreateTask";
 import IsLoading from "../modules/projectManagement/IsLoading";
-import EditTask from "../modules/taskManagement/EditTask";
 
 const ProjectDetail = () => {
   const param = useParams();
   const { projectDetail } = useSelector((state) => state.ProjectService);
-  const { isLoading } = useSelector((state) => state.TaskService);
+  const { isLoading, taskDetail, newTask,deleteTask } = useSelector((state) => state.TaskService);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProjectDetail(param.id));
-  }, [dispatch, param.id]);
-  const user = JSON.parse(localStorage.getItem("user"))?.name;
+  }, [dispatch, param.id,taskDetail,newTask,deleteTask,isLoading]);
   return (
     <div>
       <div className="p-4 sm:ml-64">
@@ -29,7 +27,7 @@ const ProjectDetail = () => {
               title: "Project",
             },
             {
-              title: `${user}`,
+              title: `${projectDetail?.creator.name}`,
             },
             {
               title: projectDetail?.projectName,
@@ -47,7 +45,7 @@ const ProjectDetail = () => {
             + Create task
           </button>
         </div>
-        <TaskFilter projectDetail={projectDetail} />
+        <TaskFilter param ={param.id} projectDetail={projectDetail} />
         {""}
         <br />
         {isLoading? <TaskList projectDetail={projectDetail} /> : <IsLoading/>}

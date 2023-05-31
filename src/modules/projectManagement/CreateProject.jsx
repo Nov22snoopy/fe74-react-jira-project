@@ -2,20 +2,29 @@ import React, { useEffect, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { createProjectAuthorize, getProjectCategory } from "../../store/project/thunkAction";
+import {
+  createProjectAuthorize,
+  getProjectCategory,
+} from "../../store/project/thunkAction";
 import { Navigate } from "react-router-dom";
 const CreateProject = () => {
   const editorRef = useRef(null);
-  const {projectCategories ,newProject} = useSelector((state)=> state.ProjectService)
+  const { projectCategories,isDeleting } = useSelector(
+    (state) => state.ProjectService
+  );
   const dispatch = useDispatch();
-  useEffect(()=>{
-    dispatch(getProjectCategory())
-  },[dispatch])
-  const { register, handleSubmit } = useForm();
+  useEffect(() => {
+    dispatch(getProjectCategory());
+  }, [dispatch]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  if(newProject){
-    return <Navigate to={'/projectList'}/>
-  }  
+  if (!isDeleting) {
+    return <Navigate to={"/"} />;
+  }
   return (
     <div className="p-4 sm:ml-64 w-1/2 mx-auto">
       <h1 className="font-bold text-2xl mb-4">Create Project</h1>
@@ -25,9 +34,9 @@ const CreateProject = () => {
           const project = {
             projectName: value.projectName,
             description: editorRef?.current.getContent(),
-            categoryId: Number( value.categoryId),
+            categoryId: Number(value.categoryId),
           };
-          dispatch(createProjectAuthorize(project))
+          dispatch(createProjectAuthorize(project));
         })}
       >
         <div className="mb-6">
@@ -41,8 +50,13 @@ const CreateProject = () => {
             type="text"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="project name..."
-            {...register("projectName")}
+            {...register("projectName", {
+              required: "Please insert project name",
+            })}
           />
+          <p className="text-[13px] text-red-500">
+            {errors?.projectName?.message}
+          </p>
         </div>
         <div className="mb-6">
           <label
@@ -85,13 +99,13 @@ const CreateProject = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             {...register("categoryId")}
           >
-            {
-              projectCategories.map((item)=> {
-                return (
-                  <option key={item.id} value={item.id}>{item.projectCategoryName}</option>
-                )
-              })
-            }
+            {projectCategories.map((item) => {
+              return (
+                <option key={item.id} value={item.id}>
+                  {item.projectCategoryName}
+                </option>
+              );
+            })}
           </select>
         </div>
         <button

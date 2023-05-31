@@ -1,5 +1,5 @@
 import { Drawer, Space } from "antd";
-import { useState, useEffect, useRef, memo } from "react";
+import { useEffect, useRef, memo } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,38 +10,37 @@ import {
 } from "../../store/project/thunkAction";
 import { openDrawerAction } from "../../store/drawer/slice";
 const UpdateProject = () => {
-  const [categoryId, setCategoryId] = useState(null) 
   const editorRef = useRef(null);
-  const { projectCategories, projectId, projectDetail, projectCategoryId } = useSelector(
-    (state) => state.ProjectService
-  );
-  const {onOpen} =useSelector((state)=>state.OpenDrawer)
+  const { projectCategories, projectId, projectDetail, projectCategoryId } =
+    useSelector((state) => state.ProjectService);
+  const { onOpen } = useSelector((state) => state.OpenDrawer);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProjectCategory());
   }, [dispatch]);
-  useEffect(()=>{
-    dispatch(getProjectDetail(projectId))
-  },[dispatch,projectId])
-  const { register, handleSubmit, reset } = useForm({
-  
-  });
-  useEffect(()=>{
-    reset(projectDetail)
-  },[reset,projectDetail])
-  const Onclose = () =>{
-    dispatch(openDrawerAction.closeDrawer())
-  }
+  useEffect(() => {
+    dispatch(getProjectDetail(projectId));
+  }, [dispatch, projectId]);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({});
+  useEffect(() => {
+    reset(projectDetail);
+  }, [reset, projectDetail]);
+  const Onclose = () => {
+    dispatch(openDrawerAction.closeDrawer());
+  };
 
   return (
     <>
-      <Space>
-
-      </Space>
+      <Space></Space>
       <Drawer
         title={<h1 className="text-2xl mt-3 font-bold">Update Project</h1>}
         placement="right"
-        size='large'
+        size="large"
         onClose={Onclose}
         open={onOpen}
       >
@@ -51,10 +50,10 @@ const UpdateProject = () => {
               id: Number(projectDetail?.id),
               projectName: value.projectName,
               description: editorRef?.current.getContent(),
-              categoryId: value.categoryId
-            }
-            dispatch(updateProject(project))
-            Onclose()
+              categoryId: value.categoryId,
+            };
+            dispatch(updateProject(project));
+            Onclose();
           })}
         >
           <div className="mb-6">
@@ -69,8 +68,11 @@ const UpdateProject = () => {
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="project name..."
-              {...register("projectName")}
+              {...register("projectName", {
+                required: "Please insert project name",
+              })}
             />
+            <p className="text-[13px] text-red-500">{errors?.projectName?.message}</p>
           </div>
           <div className="mb-6">
             <label
