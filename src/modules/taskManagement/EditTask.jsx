@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, Modal, Slider, Space } from "antd";
+import { Avatar, Dropdown, Modal, Popconfirm, Slider, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openModalAction } from "../../store/taskModal/slice";
@@ -77,15 +77,24 @@ const EditTask = (props) => {
         <form action="">
           <div className="taskId flex justify-between">
             <p className="text-gray-500">Task-{taskId}</p>
-            <p
-              onClick={() => {
-                dispatch(removeTask(taskId));
-                onClose();
-              }}
+            <Popconfirm
+                title="Delete the task"
+                description="Are you sure to delete this task?"
+                okText="Yes"
+                cancelText="No"
+                okType="default"
+                onConfirm={()=>{
+                  dispatch(removeTask(taskId));
+                  onClose();
+                }}
+              // onClick={() => {
+              //   dispatch(removeTask(taskId));
+              //   onClose();
+              // }}
               className="  mr-[45px] relative  transition-all "
             >
               <DeleteOutlined className="absolute top-[-4.5px] text-lg bg-gray-10 hover:bg-gray-200 px-1 pb-1 cursor-pointer transition-all" />
-            </p>
+            </Popconfirm>
           </div>
           <div className=" grid md:grid-cols-3 md:gap-6">
             <div className=" form-left mb-6 col-span-2">

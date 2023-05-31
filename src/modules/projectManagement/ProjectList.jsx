@@ -169,7 +169,7 @@ const ProjectList = () => {
             <EditOutlined className="text-white p-2" />
           </button>
           <Popconfirm
-            title="Delete the task"
+            title="Delete the project"
             description="Are you sure to delete this project?"
             okText="Yes"
             cancelText="No"
