@@ -11,7 +11,11 @@ export const login = createAsyncThunk(
         message.success("Login successfully")
         return res.data.content
       }
+
     } catch (error) {
+      if(error) {
+        message.error("Email or password is incorrect")
+      }
       return rejectWithValue(error)  
     }
   }
