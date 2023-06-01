@@ -12,23 +12,22 @@ const CreateTask = (props) => {
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
   });
-  const[reRender,setRerender] = useState(1)
   const { onOpen } = useSelector((state) => state.OpenModal);
   const { taskType, priority, isLoading, newTask } = useSelector((state) => state.TaskService);
   const dispatch = useDispatch();
   const editorRef = useRef(null);
   const onClose = () => {
     dispatch(openModalAction.closeModal());
-  };
+  }; const { register, handleSubmit, setValue, reset } = useForm({
+  
+  });
   useEffect(() => {
     dispatch(getTaskType());
     dispatch(getALLUser());
     dispatch(getPiority());
-    setRerender(Math.floor(Math.random() * 10))
-  }, [dispatch,isLoading,newTask]);
-  const { register, handleSubmit, setValue } = useForm({
-  
-  });
+    reset()
+  }, [dispatch,isLoading,newTask,reset]);
+ 
 
   return (
     <Modal

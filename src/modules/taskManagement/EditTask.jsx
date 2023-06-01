@@ -39,10 +39,12 @@ const EditTask = (props) => {
   const editorRef = useRef(null);
   const { register, handleSubmit } = useForm();
   useEffect(() => {
-    dispatch(getTaskDetail(taskId));
+    if (onOpenEdit) {
+      dispatch(getTaskDetail(taskId));
+    }
     dispatch(getStatus());
     dispatch(getPiority());
-  }, [dispatch, taskId, isLoading]);
+  }, [dispatch, taskId, isLoading,onOpenEdit]);
   const items = props.members
     ?.filter((member) => {
       let index = taskDetail?.assigness.findIndex(
@@ -78,15 +80,15 @@ const EditTask = (props) => {
           <div className="taskId flex justify-between">
             <p className="text-gray-500">Task-{taskId}</p>
             <Popconfirm
-                title="Delete the task"
-                description="Are you sure to delete this task?"
-                okText="Yes"
-                cancelText="No"
-                okType="default"
-                onConfirm={()=>{
-                  dispatch(removeTask(taskId));
-                  onClose();
-                }}
+              title="Delete the task"
+              description="Are you sure to delete this task?"
+              okText="Yes"
+              cancelText="No"
+              okType="default"
+              onConfirm={() => {
+                dispatch(removeTask(taskId));
+                onClose();
+              }}
               // onClick={() => {
               //   dispatch(removeTask(taskId));
               //   onClose();
@@ -193,7 +195,7 @@ const EditTask = (props) => {
                 /> */}
               </div>
               <div className="mb-6 mt-6 comment">
-                <Comment taskId = {taskId}/>
+                <Comment taskId={taskId} />
               </div>
             </div>
             <div className="form-right">

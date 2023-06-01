@@ -19,8 +19,10 @@ const UpdateProject = () => {
     dispatch(getProjectCategory());
   }, [dispatch]);
   useEffect(() => {
-    dispatch(getProjectDetail(projectId));
-  }, [dispatch, projectId]);
+    if(onOpen) {
+      dispatch(getProjectDetail(projectId));
+    }
+  }, [dispatch, projectId, onOpen]);
   const {
     register,
     handleSubmit,

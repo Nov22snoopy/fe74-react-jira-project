@@ -16,8 +16,10 @@ const ProjectDetail = () => {
   const { isLoading, taskDetail, newTask,deleteTask } = useSelector((state) => state.TaskService);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProjectDetail(param.id));
-  }, [dispatch, param.id,taskDetail,newTask,deleteTask,isLoading]);
+    if(param){
+      dispatch(getProjectDetail(param.id));
+    }
+  }, [dispatch, param,param.id,taskDetail,newTask,deleteTask,isLoading]);
   return (
     <div>
       <div className="p-4 sm:ml-64">
